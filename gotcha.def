@@ -1,0 +1,3 @@
+NAME Gotcha WINDOWAPI
+DESCRIPTION "Gotcha, Copyright (c) 1998-2002 Thorsten Thielen <thth@c2226.de>"
+STACKSIZE 0x8000

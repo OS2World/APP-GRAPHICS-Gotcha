@@ -1,0 +1,8 @@
+;
+;       PORTBRAS.DLL module definition file
+;
+
+LIBRARY  PORTBRAS
+
+DESCRIPTION 'Brasilian Portuguese language resources for Gotcha!'
+

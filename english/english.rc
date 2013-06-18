@@ -1,0 +1,289 @@
+/***
+ gotcha.rc - English ressource file for Gotcha!
+
+ Note to translators:
+    Basically you need to translate everything in "..." :-)
+    "\t", "%ld", "%s" and the like are special control sequences (C(++)
+       programmers will find them familiar) - just leave them as they are.
+    Please adjust the hotkeys (the stuff in the
+       ACCELTABLE ... BEGIN ... END
+       statements) and the corresponding "markers" for the hotkeys in the
+       dialogs above ("E~xit" e.g. means underline the "x" to show that
+       ALT+"x" is the hotkey for this button)
+    It would be nice if you could translate the comments (like this one) too.
+    An editor that supports syntax highlighting for *.rc files (like FTE
+       or EPM) could make life a bit easier for you.
+    If you have any questions, just contact me at  thth@c2226.de
+
+ Thank you very much!
+ ***/
+
+/* Please do NOT try to translate the following statement :-) */
+RCINCLUDE "src\common.rc"
+
+/* Please adjust the name of the language (but leave the number alone :-) 
+   If possible use the name your language is called "in itself"
+   e.g. German -> "Deutsch"
+        English -> "English"
+        French -> "Francais"
+        Dutch -> "Nederlands"
+   etc. */
+RCDATA DLL_ID 
+{
+     "Gotcha!",              /* What program is the dll for? */
+     1,                      /* Version number of the dll */
+     "English",              /* Name of the language for the list */
+/*     "Thorsten Thielen",     /* Translator's name */
+/*     "English",              /* Language to be used for online help */
+/*     "english",              /* Name of the help file */
+}
+
+MENU IDM_SSWPOPUP
+{
+    SUBMENU  "~Capture",                 WID_CAPTURETYPE,MS_CONDITIONALCASCADE
+    {
+        MENUITEM "~Screen",              WID_SSWSCREEN
+        MENUITEM "Screen ~region",       WID_SSWSCREENREGION
+        MENUITEM "~Window",              WID_SSWWINDOW
+        MENUITEM "Window  ~interior",    WID_SSWWINDOWINT
+    }
+    MENUITEM "Hide when capturing",      WID_CB_SSWHIDE
+    MENUITEM "Always on top",            WID_CB_SSWALWAYSONTOP
+    MENUITEM SEPARATOR
+    MENUITEM "Close",                    WID_CB_SSWENABLE
+}
+
+ACCELTABLE 1 PRELOAD
+BEGIN
+   "a",    WID_PB_ABOUT, CHAR, ALT
+   "e",    WID_PB_SETTINGS, CHAR, ALT
+/*   VK_F1,  WID_PB_ABOUT, VIRTUALKEY */
+
+   "c",    WID_RB_CLIPBOARD, CHAR, ALT
+   "f",    WID_RB_FILE, CHAR, ALT
+
+   "h",    WID_CB_HIDEWINDOW, CHAR, ALT
+   "d",    WID_CB_DELAYEDCAPTURE, CHAR, ALT
+
+   "s",    WID_PB_SCREEN, CHAR, ALT
+   "r",    WID_PB_SCREENREGION, CHAR, ALT
+   "w",    WID_PB_WINDOW, CHAR, ALT
+   "i",    WID_PB_WINDOWINTERIOR, CHAR, ALT
+
+   "q",    WID_PB_EXIT, CHAR, ALT
+END
+
+
+WINDOWTEMPLATE ID_DLG_MAIN
+BEGIN
+    FRAME   PSZ_NAMEVERSION, ID_DLG_MAIN, 98, 66, 200, 70,
+            FS_NOBYTEALIGN | FS_DLGBORDER | NOT WS_VISIBLE,
+            FCF_TITLEBAR | FCF_SYSMENU | FCF_AUTOICON | FCF_TASKLIST | FCF_MINBUTTON
+    BEGIN          // Please do NOT try to translate the "thth.wc..." ;-)
+        WINDOW          "", FID_CLIENT, 0, 0, 200, 70, "thth.wc.gotcha.main",
+                        FS_NOBYTEALIGN | NOT WS_VISIBLE
+        BEGIN
+            GROUPBOX        "Save image to ...", WID_TEST, 4, 36, 90, 30
+            AUTORADIOBUTTON "~Clipboard", WID_RB_CLIPBOARD, 10, 48, 78, 10, WS_TABSTOP
+            AUTORADIOBUTTON "~File", WID_RB_FILE, 10, 38, 78, 10, WS_TABSTOP
+            GROUPBOX        "Capture ...", WID_NIL, 100, 4, 96, 62
+            PUSHBUTTON      "~Screen", WID_PB_SCREEN, 104, 44, 88, 12
+            PUSHBUTTON      "Screen ~region", WID_PB_SCREENREGION, 104, 32, 88, 12
+            PUSHBUTTON      "~Window", WID_PB_WINDOW, 104, 20, 88, 12
+            PUSHBUTTON      "Window ~interior", WID_PB_WINDOWINTERIOR, 104, 8, 88, 12
+            GROUPBOX        "Options", WID_NIL, 4, 4, 90, 30
+            AUTOCHECKBOX    "~Hide Gotcha!", WID_CB_HIDEWINDOW, 10, 16, 78, 10
+            AUTOCHECKBOX    "~Delayed capt.", WID_CB_DELAYEDCAPTURE, 10, 6, 78, 10
+        END
+    END
+END
+
+DLGTEMPLATE ID_DLG_ABOUT LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "About ""Gotcha!""", ID_DLG_ABOUT, 90, 56, 280, 80,
+    	    WS_VISIBLE, FCF_SYSMENU | FCF_TITLEBAR
+    BEGIN
+        ICON            1, 1000, 8, 58, 21, 16, WS_GROUP
+        LTEXT           PSZ_NAMEVERSION, WID_NIL, 42, 64, 202, 9
+                        PRESPARAMS PP_FOREGROUNDCOLOR, 0x00C80A0AL
+        LTEXT           "Screen/window capture utility", WID_NIL, 42, 53, 202, 8
+        LTEXT           "Copyright (c) 1998-2007 Thorsten Thielen", WID_NIL, 42, 44, 
+                        202, 8
+        LTEXT           "e-Mail: thth@c2226.de", WID_NIL, 42, 32, 202, 8
+        LTEXT           "WWW: http://www.c2226.de/programs/gotcha", WID_NIL, 42, 13, 232, 17, DT_WORDBREAK
+        LTEXT           "English translation: Thorsten Thielen", WID_NIL,
+                        42, 4, 202, 8
+        DEFPUSHBUTTON   "Ok", WID_NIL, 8, 6, 22, 26
+    END
+END
+
+DLGTEMPLATE ID_DLG_FILE LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "", ID_DLG_FILE, 70, 22, 300, 158, WS_VISIBLE, FCF_SYSMENU | 
+            FCF_TITLEBAR
+    BEGIN
+        LTEXT           "~Filename", DID_FILENAME_TXT, 4, 140, 48, 12, DT_MNEMONIC
+        ENTRYFIELD      "", DID_FILENAME_ED, 58, 144, 236, 8, ES_MARGIN
+        LTEXT           "~Type", DID_FILTER_TXT, 4, 140, 46, 0, DT_VCENTER | DT_MNEMONIC
+        CONTROL         "", DID_FILTER_CB, 56, 106, 240, 45, WC_COMBOBOX, 
+                        CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP /*| 
+                        WS_VISIBLE*/
+        LTEXT           "~Drives", DID_DRIVE_TXT, 4, 128, 34, 8, DT_MNEMONIC
+        CONTROL         "", DID_DRIVE_CB, 4, 46, 34, 80, WC_COMBOBOX, 
+                        CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | 
+                        WS_VISIBLE
+//        LISTBOX         DID_DRIVE_CB, 4, 46, 34, 80, LS_NOADJUSTPOS
+        LTEXT           "~Directories", DID_DIRECTORY_TXT, 44, 128, 122, 8, DT_MNEMONIC
+        LISTBOX         DID_DIRECTORY_LB, 44, 46, 122, 80, LS_NOADJUSTPOS | LS_OWNERDRAW | LS_HORZSCROLL
+        LTEXT           "~Files", DID_FILES_TXT, 172, 128, 124, 8, DT_MNEMONIC
+        LISTBOX         DID_FILES_LB, 172, 46, 124, 80, LS_NOADJUSTPOS | 
+                        LS_HORZSCROLL
+        AUTOCHECKBOX    "Automatically add file ~extension if not present",
+                        WID_CB_AUTOADDEXTENSION, 4, 32, 292, 10
+        AUTOCHECKBOX    "Ask before ~overwriting an existing file",
+                        WID_CB_CONFIRMOVERWRITE, 4, 22, 292, 10
+        DEFPUSHBUTTON   "~Ok", DID_OK_PB, 4, 4, 50, 14
+        PUSHBUTTON      "~Cancel", DID_CANCEL_PB, 60, 4, 50, 14
+    END
+END
+
+DLGTEMPLATE ID_DLG_SETTINGS LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "Gotcha! settings", ID_DLG_SETTINGS, 104, 26, 280, 196, 0L,
+            FCF_SYSMENU | FCF_TITLEBAR
+    BEGIN
+        NOTEBOOK        WID_NB_SETTINGS, 5, 21, 270, 170, BKS_BACKPAGESTR | 
+                        BKS_MAJORTABTOP | BKS_ROUNDEDTABS | 
+                        BKS_TABTEXTCENTER | BKS_SPIRALBIND | WS_GROUP |
+                        BKS_TABBEDDIALOG
+        DEFPUSHBUTTON   "~Ok", WID_PB_OK, 5, 4, 60, 14
+        PUSHBUTTON      "~Undo", WID_PB_UNDO, 70, 4, 60, 14
+        PUSHBUTTON      "Help", WID_PB_HELP, 215, 4, 60, 14, BS_HELP | 
+                        BS_NOPOINTERFOCUS
+    END
+END
+
+DLGTEMPLATE ID_DLG_SETTINGSPAGE1 LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "", ID_DLG_SETTINGSPAGE1, 15, 15, 240, 120, NOT FS_DLGBORDER | 
+            WS_VISIBLE
+    BEGIN
+        GROUPBOX        "Save type", WID_NIL, 5, 53, 240, 72
+        AUTORADIOBUTTON "~Prompt for filename", WID_RB_FSSPROMPT, 11, 105, 228, 10, 
+                        WS_TABSTOP | WS_GROUP
+        AUTORADIOBUTTON "~Autosave to numbered files in directory ...", WID_RB_FSSNUMFILES, 
+                        11, 95, 228, 10, WS_TABSTOP
+        AUTORADIOBUTTON "~Force saving to file ...", WID_RB_FSSFORCEFILE, 11, 71, 228, 10, 
+                        WS_TABSTOP
+	ENTRYFIELD      "", WID_E_NUMSAVEDIR, 27, 85, 210, 8, ES_MARGIN
+        ENTRYFIELD      "", WID_E_FORCESAVEFILE, 27, 61, 210, 8, ES_MARGIN
+        GROUPBOX        "Image file ~format", WID_NIL, 5, 5, 240, 44, DT_MNEMONIC
+        LISTBOX         WID_LB_FILEFORMAT, 11, 9, 228, 30, LS_NOADJUSTPOS
+/*        AUTORADIOBUTTON "1.2 (What Windoze calls ""OS/2 format"")", WID_RB_BMF12, 11, 
+                        29, 208, 10, WS_TABSTOP | WS_GROUP
+        AUTORADIOBUTTON "1.6 (Windoze format)", WID_RB_BMF16, 11, 19, 208, 10, 
+                        WS_TABSTOP
+        AUTORADIOBUTTON "2.0 (Full OS/2 format)", WID_RB_BMF20, 11, 9, 208, 10, 
+                        WS_TABSTOP */
+    END
+END
+
+DLGTEMPLATE ID_DLG_SETTINGSPAGE2 LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "", ID_DLG_SETTINGSPAGE2, 15, 15, 220, 120, NOT FS_DLGBORDER | 
+            WS_VISIBLE
+    BEGIN
+        AUTOCHECKBOX    "~Enable snapshot window", WID_CB_SSWENABLE, 13, 115, 204, 10
+        GROUPBOX        "Capture type", WID_NIL, 5, 59, 220, 54
+        AUTORADIOBUTTON "~Screen", WID_SSWSCREEN, 13, 93, 204, 10, WS_TABSTOP
+        AUTORADIOBUTTON "Screen ~region", WID_SSWSCREENREGION, 13, 83, 204, 10, WS_TABSTOP
+        AUTORADIOBUTTON "~Window", WID_SSWWINDOW, 13, 73, 204, 10, WS_TABSTOP
+        AUTORADIOBUTTON "Window ~interior", WID_SSWWINDOWINT, 13, 63, 204, 10, WS_TABSTOP
+        GROUPBOX        "Options", WID_NIL, 5, 5, 220, 50
+        AUTOCHECKBOX    "Always on ~top of all windows", WID_CB_SSWALWAYSONTOP, 13, 35, 204, 10
+        AUTOCHECKBOX    "~Hide when doing a capture", WID_CB_SSWHIDE, 13, 25, 204, 10
+    END
+END
+
+DLGTEMPLATE ID_DLG_SETTINGSPAGE3 LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "", ID_DLG_SETTINGSPAGE3, 15, 15, 220, 120, NOT FS_DLGBORDER | 
+            WS_VISIBLE
+    BEGIN
+        GROUPBOX        "Delayed capture", WID_NIL, 5, 89, 220, 36
+        AUTOCHECKBOX    "Countdown timer with ~beeps", WID_CB_DELAYCOUNTDOWN, 11, 105, 208, 10
+        RTEXT           "Capture ~delay:", WID_NIL, 11, 95, 106, 8, DT_MNEMONIC
+        SPINBUTTON      WID_SB_DELAYTIME, 121, 95, 44, 12, SPBS_MASTER | WS_GROUP
+        LTEXT           "second(s)", WID_NIL, 169, 95, 52, 8
+        GROUPBOX        "Serial capture", WID_NIL, 5, 51, 220, 36
+        AUTOCHECKBOX    "Use ~serial capture", WID_CB_SERIALCAPTURE, 11, 67, 208, 10
+        RTEXT           "Do a capture every", WID_NIL, 11, 57, 106, 8
+        SPINBUTTON      WID_SB_SERIALTIME, 121, 57, 44, 12, SPBS_MASTER | WS_GROUP
+        LTEXT           "second(s)/20", WID_NIL, 169, 57, 52, 8
+        GROUPBOX        "Other options", WID_NIL, 5, 5, 220, 42
+        AUTOCHECKBOX    "Use s~ound when capture finished", WID_CB_DOSOUND, 11, 27, 208,
+                        10
+        AUTOCHECKBOX    "Run Gotcha! at idle ~priority", WID_CB_IDLEPRIORITY, 11, 17, 208,
+                        10
+    END
+END
+
+DLGTEMPLATE ID_DLG_SETTINGSPAGE4 LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "", ID_DLG_SETTINGSPAGE4, 15, 15, 220, 120, NOT FS_DLGBORDER | 
+            WS_VISIBLE
+    BEGIN
+        GROUPBOX        "Program", WID_NIL, 5, 62, 119, 54
+        LISTBOX         WID_LB_LANGUAGES, 11, 66, 106, 40, LS_NOADJUSTPOS
+        GROUPBOX        "Online help", WID_NIL, 5, 5, 119, 54
+        LISTBOX         WID_LB_LANGUAGESHELP, 11, 9, 106, 40, LS_NOADJUSTPOS
+        CONTROL         4, WID_NIL, 130, 5, 84, 36, WC_STATIC, SS_BITMAP | 
+                        WS_GROUP | WS_VISIBLE
+        LTEXT           "Note: This settings will take effect for the first "
+                        "time at the next start of the program.",
+                        WID_ST_LANGNOTE, 130, 45, 114, 70, 
+                        DT_WORDBREAK
+    END
+END
+
+STRINGTABLE
+{
+    IDS_QUIETMODE                      " (quiet mode)"
+    IDS_SETTINGS                       "~Settings...\tALT+E"
+    IDS_PRODUCTINFORMATION             "Product information\tALT+A"
+    IDS_HEADER_ERROR                   "ERROR"
+    IDS_ERROR_COULDNOTRETRIEVEHEADER   "Could not retrieve bitmap info header (0x%08lx)"
+    IDS_ERROR_COULDNOTGETBITMAPBITS    "Could not get bitmap bits (0x%08lx)"
+    IDS_ERROR_COULDNOTOPENFILE         "Could not open file '%s'."
+    IDS_ERROR_COULDNOTWRITEFILETYPEEA  "Could not write filetype EA."
+    IDS_SAVESCREENSHOTTO               "Save screenshot to ..."
+    IDS_HEADER_WARNING                 "WARNING"
+    IDS_FILEEXISTSOVERWRITE            "File already exists. Overwrite?"
+    IDS_ERROR_INIFILEWRONGVERSION      "The INI-file's (""%s"") version does not match the current version of Gotcha! or the file could not be opened. Defaults will be used."
+    IDS_ERROR_INIFILENOTOPEN           "The INI-file (""%s"") could not be opened! Defaults will be used."
+
+    IDS_ERROR_HELPERHEADING                 "HELP ERROR"
+    IDS_ERROR_COULDNOTINITHELP              "Could not initialize online help."
+    IDS_ERROR_COULDNOTINITHELPFILE          "Could not initialize online help. Does helpfile '%s' exist in Minta's directory?"
+
+    IDS_PAGESAVE                       "Saving"
+    IDS_PAGESNAPSHOT                   "Snapshot"
+    IDS_PAGEMISC                       "Misc"
+    IDS_PAGELANGUAGE                   "Language"
+
+    IDS_BITMAP12INTERNAL               "Bitmap 1.2 (Saved using Gotcha! internal routine)"
+    IDS_BITMAP16INTERNAL               "Bitmap 1.6 (Saved using Gotcha! internal routine)"
+    IDS_BITMAP20INTERNAL               "Bitmap 2.0 (Saved using Gotcha! internal routine)"
+    IDS_BITMAP13MMOS2                  "Bitmap 1.3 (Saved using OS/2 Multimedia)"
+    IDS_BITMAP20MMOS2                  "Bitmap 2.0 (Saved using OS/2 Multimedia)"
+    IDS_TIFFCOMPRESSED                 "TIFF compressed"
+    IDS_TIFFUNCOMPRESSED               "TIFF uncompressed"
+    IDS_TGA                            "TGA"
+    IDS_PCX                            "PCX"
+    IDS_GIF                            "GIF"
+    IDS_JPEG                           "Jpeg (Probably won't work, reason unknown)"
+    IDS_DIB                            "DIB (Device Independent Bitmap)"
+
+    IDS_SNAPLABEL                      "Snap!"
+    IDS_GENERALHELP                    "Gotcha! ~help..."
+}

@@ -1,0 +1,5 @@
+;
+;       GOTCH421.DLL module definition file
+;
+LIBRARY  GOTCH421
+DESCRIPTION  'Czech language resources for Gotcha!'

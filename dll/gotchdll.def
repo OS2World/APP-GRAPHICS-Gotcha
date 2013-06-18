@@ -1,0 +1,10 @@
+LIBRARY GOTCHA
+
+DESCRIPTION 'Gotcha! Hook DLL'
+
+EXPORTS
+  InitDLL
+  StartInputHook
+  StopInputHook
+  InputProc
+  Version

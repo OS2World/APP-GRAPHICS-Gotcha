@@ -1,0 +1,315 @@
+/***
+ gotcha.rc - Ÿeskì soubor se zdroji programu Gotcha!
+
+ Pozn mka pro pýekladatele:
+    V podstatØ je týeba pýelo§it vçechno v uvozovk ch "..." :-)
+    "\t", "%ld", "%s" atd. jsou speci ln¡ ý¡d¡c¡ sekvence (program toýi
+       v jazyce C(++) je budou zn t) - nechte je, jak jsou.
+    Pros¡m, upravte kl vesov‚ kombinace (vØci v pý¡kazech
+       ACCELTABLE ... BEGIN ... END) a odpov¡daj¡c¡ "oznaŸen¡" pro
+       hork‚ kl vesy v dialogovìch oknech uvedenìmi nad nimi ("~Konec"
+       napý¡klad znamen , §e p¡smeno "K" bude podtr§eno, co§ znamen , §e
+       kl vesov  kombinace ALT+"K" je hork  kl vesa pro toto tlaŸ¡tko)
+    Pokud mo§no pýelo§te i pozn mky (jako je tato).
+    Editor podporuj¡c¡ zvìraznØn¡ syntaxe pro soubory *.rc (napý¡klad FTE
+       nebo EPM) V m m…§e pr ci trochu usnadnit.
+    M te-li nØjak‚ dotazy, kontaktujte autora na adrese thth@c2226.de
+    nebo pýekladatele do Ÿeçtiny na adrese XHajT03@mbox.vol.cz
+
+ D¡ky!
+ ***/
+
+/* Please do NOT try to translate the following statement :-) */
+RCINCLUDE "src\common.rc"
+
+/* Pros¡m, upravte jm‚no jazyka (ale ponechte Ÿ¡slo) :-) 
+   If possible use the name your language is called "in itself"
+   e.g. German -> "Deutsch"
+        English -> "English"
+        French -> "Francais"
+        Dutch -> "Nederlands"
+   etc. */
+RCDATA DLL_ID 
+{
+     "Gotcha!",            /* Pro kterì program je urŸena tato knihovna DLL? */
+     1,                    /* ¬¡slo verze knihovny DLL */
+     "¬esky",              /* Jm‚no jazyka pro uveden¡ do seznamu */
+/*     "Tom ç Hajnì",    /* Jm‚no pýekladatele, Tomas Hajny */
+/*     "¬eçtina",              /* Jazyk pou§itì pro n povØdu */
+/*     "czech",                /* Jm‚no souboru s n povØdou */
+}
+
+MENU IDM_SSWPOPUP
+{
+    SUBMENU  "Se~jmout",                 WID_CAPTURETYPE,MS_CONDITIONALCASCADE
+    {
+        MENUITEM "O~brazovku",              WID_SSWSCREEN
+        MENUITEM "¬ s~t obrazovky",       WID_SSWSCREENREGION
+        MENUITEM "~Okno",              WID_SSWWINDOW
+        MENUITEM "Vn~itýek okna",    WID_SSWWINDOWINT
+    }
+    MENUITEM "Skrìt pýi sn¡m n¡",      WID_CB_SSWHIDE
+    MENUITEM "V§dy navrchu",            WID_CB_SSWALWAYSONTOP
+    MENUITEM SEPARATOR
+    MENUITEM "Zavý¡t",                    WID_CB_SSWENABLE
+}
+
+ACCELTABLE 1 PRELOAD
+BEGIN
+   "i",    WID_PB_ABOUT, CHAR, ALT
+   "n",    WID_PB_SETTINGS, CHAR, ALT
+/*   VK_F1,  WID_PB_ABOUT, VIRTUALKEY */
+
+   "r",    WID_RB_CLIPBOARD, CHAR, ALT
+   "s",    WID_RB_FILE, CHAR, ALT
+
+   "k",    WID_CB_HIDEWINDOW, CHAR, ALT
+   "p",    WID_CB_DELAYEDCAPTURE, CHAR, ALT
+
+   "b",    WID_PB_SCREEN, CHAR, ALT
+   "t",    WID_PB_SCREENREGION, CHAR, ALT
+   "o",    WID_PB_WINDOW, CHAR, ALT
+   "v",    WID_PB_WINDOWINTERIOR, CHAR, ALT
+
+   "q",    WID_PB_EXIT, CHAR, ALT
+END
+
+
+WINDOWTEMPLATE ID_DLG_MAIN
+BEGIN
+    FRAME   PSZ_NAMEVERSION, ID_DLG_MAIN, 98, 66, 240, 70,
+            FS_NOBYTEALIGN | FS_DLGBORDER | NOT WS_VISIBLE,
+            FCF_TITLEBAR | FCF_SYSMENU | FCF_AUTOICON | FCF_TASKLIST | FCF_MINBUTTON
+    BEGIN          // Please do NOT try to translate the "thth.wc..." ;-)
+        WINDOW          "", FID_CLIENT, 0, 0, 240, 70, "thth.wc.gotcha.main",
+                        FS_NOBYTEALIGN | NOT WS_VISIBLE
+        BEGIN
+            GROUPBOX        "Obr zek ulo§it do ...", WID_TEST, 4, 36, 110, 30
+            AUTORADIOBUTTON "Sch~r nky", WID_RB_CLIPBOARD, 10, 48, 98, 10, WS_TABSTOP
+            AUTORADIOBUTTON "~Souboru", WID_RB_FILE, 10, 38, 98, 10, WS_TABSTOP
+            GROUPBOX        "Sejmout ...", WID_NIL, 120, 4, 116, 62
+            PUSHBUTTON      "O~brazovku", WID_PB_SCREEN, 124, 44, 108, 12
+            PUSHBUTTON      "¬ s~t obrazovky", WID_PB_SCREENREGION, 124, 32, 108, 12
+            PUSHBUTTON      "~Okno", WID_PB_WINDOW, 124, 20, 108, 12
+            PUSHBUTTON      "~Vnitýek okna", WID_PB_WINDOWINTERIOR, 124, 8, 108, 12
+            GROUPBOX        "Volby", WID_NIL, 4, 4, 110, 30
+            AUTOCHECKBOX    "S~krìt okno Gotcha!", WID_CB_HIDEWINDOW, 10, 16, 98, 10
+            AUTOCHECKBOX    "O~po§dØn‚ sejmut¡", WID_CB_DELAYEDCAPTURE, 10, 6, 98, 10
+        END
+    END
+END
+
+DLGTEMPLATE ID_DLG_ABOUT LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "Informace o produktu ""Gotcha!""", ID_DLG_ABOUT, 90, 56, 300, 80,
+    	    WS_VISIBLE, FCF_SYSMENU | FCF_TITLEBAR
+    BEGIN
+        ICON            1, 1000, 8, 58, 21, 16, WS_GROUP
+        LTEXT           PSZ_NAMEVERSION, WID_NIL, 42, 64, 202, 9
+                        PRESPARAMS PP_FOREGROUNDCOLOR, 0x00C80A0AL
+        LTEXT           "N stroj pro sejmut¡ obrazovky/okna", WID_NIL, 42, 53, 202, 8
+        LTEXT           "Copyright (c) 1998-2007 Thorsten Thielen", WID_NIL, 42, 44, 
+                        202, 8
+        LTEXT           "e-Mail: thth@c2226.de", WID_NIL, 42, 32, 202, 8
+        LTEXT           "WWW: http://www.c2226.de/programs/gotcha", WID_NIL, 42, 13, 232, 17, DT_WORDBREAK
+        LTEXT           "Pýeklad do Ÿeçtiny: Tom ç Hajnì (XHajT03@mbox.vol.cz)", WID_NIL,
+                        42, 4, 242, 8
+        DEFPUSHBUTTON   "Ok", WID_NIL, 8, 6, 22, 26
+    END
+END
+
+DLGTEMPLATE ID_DLG_FILE LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "", ID_DLG_FILE, 70, 22, 300, 158, WS_VISIBLE, FCF_SYSMENU | 
+            FCF_TITLEBAR
+    BEGIN
+        LTEXT           "Jm‚no souboru", DID_FILENAME_TXT, 4, 140, 48, 12
+        ENTRYFIELD      "", DID_FILENAME_ED, 58, 144, 236, 8, ES_MARGIN
+        LTEXT           "Typ", DID_FILTER_TXT, 4, 140, 46, 0, DT_VCENTER
+        CONTROL         "", DID_FILTER_CB, 56, 106, 240, 45, WC_COMBOBOX, 
+                        CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP /*| 
+                        WS_VISIBLE*/
+        LTEXT           "Disky", DID_DRIVE_TXT, 4, 128, 34, 8
+        CONTROL         "", DID_DRIVE_CB, 4, 46, 34, 80, WC_COMBOBOX, 
+                        CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | 
+                        WS_VISIBLE
+//        LISTBOX         DID_DRIVE_CB, 4, 46, 34, 80, LS_NOADJUSTPOS
+        LTEXT           "Adres ýe", DID_DIRECTORY_TXT, 44, 128, 122, 8
+        LISTBOX         DID_DIRECTORY_LB, 44, 46, 122, 80, LS_NOADJUSTPOS | LS_OWNERDRAW | LS_HORZSCROLL
+        LTEXT           "Soubory", DID_FILES_TXT, 172, 128, 124, 8
+        LISTBOX         DID_FILES_LB, 172, 46, 124, 80, LS_NOADJUSTPOS | 
+                        LS_HORZSCROLL
+        AUTOCHECKBOX    "Automaticky pýidat pý¡ponu nen¡-li uvedena",
+                        WID_CB_AUTOADDEXTENSION, 4, 32, 292, 10
+        AUTOCHECKBOX    "Pýed pýeps n¡m existuj¡c¡ho souboru se zeptat",
+                        WID_CB_CONFIRMOVERWRITE, 4, 22, 292, 10
+        DEFPUSHBUTTON   "Ok", DID_OK_PB, 4, 4, 50, 14
+        PUSHBUTTON      "Zruçit", DID_CANCEL_PB, 60, 4, 50, 14
+    END
+END
+
+DLGTEMPLATE ID_DLG_SETTINGS LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "", ID_DLG_SETTINGS, 104, 26, 320, 196, 0L,
+            FCF_SYSMENU | FCF_TITLEBAR
+    BEGIN
+        NOTEBOOK        WID_NB_SETTINGS, 5, 21, 310, 170, BKS_BACKPAGESTR | 
+                        BKS_MAJORTABTOP | BKS_ROUNDEDTABS | 
+                        BKS_TABTEXTCENTER | BKS_SPIRALBIND | WS_GROUP |
+                        BKS_TABBEDDIALOG
+        DEFPUSHBUTTON   "~Ok", WID_PB_OK, 5, 4, 60, 14
+        PUSHBUTTON      "O~bnovit", WID_PB_UNDO, 70, 4, 60, 14
+        PUSHBUTTON      "N povØda", WID_PB_HELP, 240, 4, 60, 14, BS_HELP | 
+                        BS_NOPOINTERFOCUS
+    END
+END
+
+ACCELTABLE  ID_DLG_SETTINGS  LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+   "o",    WID_PB_OK, CHAR, ALT
+   "b",    WID_PB_UNDO, CHAR, ALT
+END
+
+DLGTEMPLATE ID_DLG_SETTINGSPAGE1 LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "", ID_DLG_SETTINGSPAGE1, 15, 15, 320, 120, NOT FS_DLGBORDER | 
+            WS_VISIBLE
+    BEGIN
+        GROUPBOX        "Zp…sob ukl d n¡", WID_NIL, 5, 53, 285, 72
+        AUTORADIOBUTTON "Dot zat se na jm‚no", WID_RB_FSSPROMPT, 11, 105, 268, 10, 
+                        WS_TABSTOP | WS_GROUP
+        AUTORADIOBUTTON "Automaticky ukl dat do oŸ¡slovanìch soubor… v adres ýi ...", WID_RB_FSSNUMFILES, 
+                        11, 95, 268, 10, WS_TABSTOP
+        AUTORADIOBUTTON "V§dy ulo§it do souboru ...", WID_RB_FSSFORCEFILE, 11, 71, 268, 10, 
+                        WS_TABSTOP
+	ENTRYFIELD      "", WID_E_NUMSAVEDIR, 27, 85, 250, 8, ES_MARGIN
+        ENTRYFIELD      "", WID_E_FORCESAVEFILE, 27, 61, 250, 8, ES_MARGIN
+        GROUPBOX        "Form t souboru BMP", WID_NIL, 5, 5, 285, 44
+        LISTBOX         WID_LB_FILEFORMAT, 11, 9, 268, 30, LS_NOADJUSTPOS
+/*        GROUPBOX        "Form t souboru BMP", WID_NIL, 5, 5, 280, 44
+        AUTORADIOBUTTON "1.2 (to, co Windoze oznaŸuj¡ jako ""form t syst‚mu OS/2"")", WID_RB_BMF12, 11, 
+                        29, 268, 10, WS_TABSTOP | WS_GROUP
+        AUTORADIOBUTTON "1.6 (form t Windoze)", WID_RB_BMF16, 11, 19, 268, 10, 
+                        WS_TABSTOP
+        AUTORADIOBUTTON "2.0 (£plnì form t syst‚mu OS/2)", WID_RB_BMF20, 11, 9, 268, 10, 
+                        WS_TABSTOP */
+    END
+END
+
+DLGTEMPLATE ID_DLG_SETTINGSPAGE2 LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "", ID_DLG_SETTINGSPAGE2, 15, 15, 240, 120, NOT FS_DLGBORDER | 
+            WS_VISIBLE
+    BEGIN
+        AUTOCHECKBOX    "Povolit okna pro ""momentky""", WID_CB_SSWENABLE, 13, 115, 204, 10
+        GROUPBOX        "Typ sejmut¡", WID_NIL, 5, 59, 220, 54
+        AUTORADIOBUTTON "Obrazovka", WID_SSWSCREEN, 13, 93, 204, 10, WS_TABSTOP
+        AUTORADIOBUTTON "¬ st obrazovky", WID_SSWSCREENREGION, 13, 83, 204, 10, WS_TABSTOP
+        AUTORADIOBUTTON "Okno", WID_SSWWINDOW, 13, 73, 204, 10, WS_TABSTOP
+        AUTORADIOBUTTON "Vnitýek okna", WID_SSWWINDOWINT, 13, 63, 204, 10, WS_TABSTOP
+        GROUPBOX        "Volby", WID_NIL, 5, 5, 220, 50
+        AUTOCHECKBOX    "V§dy navrchu nad ostatn¡mi okny", WID_CB_SSWALWAYSONTOP, 13, 35, 204, 10
+        AUTOCHECKBOX    "Skrìt pýi sn¡m n¡", WID_CB_SSWHIDE, 13, 25, 204, 10
+    END
+END
+
+DLGTEMPLATE ID_DLG_SETTINGSPAGE3 LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "", ID_DLG_SETTINGSPAGE3, 15, 15, 240, 120, NOT FS_DLGBORDER | 
+            WS_VISIBLE
+    BEGIN
+        GROUPBOX        "Opo§dØn‚ sn¡m n¡", WID_NIL, 5, 89, 220, 36
+        AUTOCHECKBOX    "OdpoŸ¡t v n¡ s p¡p n¡m", WID_CB_DELAYCOUNTDOWN, 11, 105, 208, 10
+        RTEXT           "Prodleva sn¡m n¡:", WID_NIL, 11, 95, 106, 8
+        SPINBUTTON      WID_SB_DELAYTIME, 121, 95, 44, 12, SPBS_MASTER | WS_GROUP
+        LTEXT           "sekund", WID_NIL, 169, 95, 52, 8
+        GROUPBOX        "S‚riov‚ sn¡m n¡", WID_NIL, 5, 51, 220, 36
+        AUTOCHECKBOX    "Pou§¡t s‚riov‚ sn¡m n¡", WID_CB_SERIALCAPTURE, 11, 67, 208, 10
+        RTEXT           "Sejmout ka§dìch", WID_NIL, 11, 57, 106, 8
+        SPINBUTTON      WID_SB_SERIALTIME, 121, 57, 44, 12, SPBS_MASTER | WS_GROUP
+        LTEXT           "sekund/20", WID_NIL, 169, 57, 52, 8
+        GROUPBOX        "Dalç¡ volby", WID_NIL, 5, 5, 220, 42
+        AUTOCHECKBOX    "Zvukov  indikace ukonŸen¡ sn¡m n¡", WID_CB_DOSOUND, 11, 27, 208,
+                        10
+        AUTOCHECKBOX    "Pou§¡t pro Gotcha! n¡zkou prioritu", WID_CB_IDLEPRIORITY, 11, 17, 208,
+                        10
+    END
+END
+
+/*DLGTEMPLATE ID_DLG_SETTINGSPAGE4 LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "", ID_DLG_SETTINGSPAGE4, 15, 15, 239, 120, NOT FS_DLGBORDER | 
+            WS_VISIBLE | NOT WS_SAVEBITS
+    BEGIN
+        GROUPBOX        "Program", WID_NIL, 6, 94, 214, 24
+        ENTRYFIELD      "", WID_LB_LANGUAGES, 12, 100, 202, 8, ES_MARGIN
+        GROUPBOX        "N povØda", WID_NIL, 6, 66, 214, 24
+        ENTRYFIELD      "", WID_LB_LANGUAGESHELP, 12, 72, 202, 8, ES_MARGIN
+        PUSHBUTTON      "Select", WID_NIL, 6, 36, 60, 20
+        LTEXT           "Pozn mka: Tato nastaven¡ se poprv‚ projev¡ pýi "
+                        "pý¡çt¡m spuçtØn¡ programu.",
+                        WID_ST_LANGNOTE, 8, 4, 206, 24, DT_WORDBREAK
+    END
+END */
+
+DLGTEMPLATE ID_DLG_SETTINGSPAGE4 LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "", ID_DLG_SETTINGSPAGE4, 15, 15, 240, 120, NOT FS_DLGBORDER | 
+            WS_VISIBLE
+    BEGIN
+        GROUPBOX        "Program", WID_NIL, 5, 62, 119, 54
+        LISTBOX         WID_LB_LANGUAGES, 11, 66, 106, 40, LS_NOADJUSTPOS
+        GROUPBOX        "N povØda", WID_NIL, 5, 5, 119, 54
+        LISTBOX         WID_LB_LANGUAGESHELP, 11, 9, 106, 40, LS_NOADJUSTPOS
+        CONTROL         4, WID_NIL, 130, 5, 84, 36, WC_STATIC, SS_BITMAP | 
+                        WS_GROUP | WS_VISIBLE
+        LTEXT           "Pozn mka: Tato nastaven¡ se poprv‚ projev¡ pýi "
+                        "pý¡çt¡m spuçtØn¡ programu.",
+                        WID_ST_LANGNOTE, 130, 45, 114, 70, 
+                        DT_WORDBREAK
+    END
+END
+
+STRINGTABLE
+{
+    IDS_QUIETMODE                      " (tichì m¢d)"
+    IDS_SETTINGS                       "~Nastaven¡...\tALT+N"
+    IDS_PRODUCTINFORMATION             "~Informace o produktu\tALT+I"
+    IDS_HEADER_ERROR                   "CHYBA"
+    IDS_ERROR_COULDNOTRETRIEVEHEADER   "Nepodaýilo se nahr t informaŸn¡ z hlav¡ souboru BMP (0x%08lx)"
+    IDS_ERROR_COULDNOTGETBITMAPBITS    "Nepodaýilo se z¡skat bitmapovì obraz (0x%08lx)"
+    IDS_ERROR_COULDNOTOPENFILE         "Nemohu otevý¡t soubor '%s'."
+    IDS_ERROR_COULDNOTWRITEFILETYPEEA  "Nemohu zapsat typ souboru do rozç¡ýenìch atribut… (EA)."
+    IDS_SAVESCREENSHOTTO               "Ulo§it obr zek do ..."
+    IDS_HEADER_WARNING                 "UPOZORN·NÖ"
+    IDS_FILEEXISTSOVERWRITE            "Soubor u§ existuje. Pýepsat?"
+    IDS_ERROR_INIFILEWRONGVERSION      "Verze konfiguraŸn¡ho souboru INI (""%s"") neodpov¡d  aktu ln¡ verzi produktu Gotcha! nebo nebylo mo§n‚ soubor otevý¡t. Budou pou§ita standardn¡ nastaven¡."
+    IDS_ERROR_INIFILENOTOPEN           "Nebylo mo§n‚ otevý¡t konfiguraŸn¡ soubor INI (""%s"")! Budou pou§ita standardn¡ nastaven¡."
+
+    IDS_ERROR_HELPERHEADING                 "CHYBA NµPOVD·DY"
+    IDS_ERROR_COULDNOTINITHELP              "Nemohu inicializovat n povØdu."
+    IDS_ERROR_COULDNOTINITHELPFILE          "Nemohu inicializovat n povØdu. Existuje v adres ýi produktu Gotcha! soubor ""%s""?"
+
+    IDS_PAGESAVE                       "Ukl d n¡"
+    IDS_PAGESNAPSHOT                   "Momentky"
+    IDS_PAGEMISC                       "R…zn‚"
+    IDS_PAGELANGUAGE                   "Jazyk"
+
+//    IDS_SETTINGSTITLE                  "Nastaven¡"
+
+    IDS_BITMAP12INTERNAL               "Bitmap 1.2 (ulo§eno intern¡m k¢dem programu Gotcha!)"
+    IDS_BITMAP16INTERNAL               "Bitmap 1.6 (ulo§eno intern¡m k¢dem programu Gotcha!)"
+    IDS_BITMAP20INTERNAL               "Bitmap 2.0 (ulo§eno intern¡m k¢dem programu Gotcha!)"
+    IDS_BITMAP13MMOS2                  "Bitmap 1.3 (ulo§eno pomoc¡ rutin syst‚mu MMOS/2)"
+    IDS_BITMAP20MMOS2                  "Bitmap 2.0 (ulo§eno pomoc¡ rutin syst‚mu MMOS/2)"
+    IDS_TIFFCOMPRESSED                 "TIFF komprimovanì"
+    IDS_TIFFUNCOMPRESSED               "TIFF nekomprimovanì"
+    IDS_TGA                            "TGA"
+    IDS_PCX                            "PCX"
+    IDS_GIF                            "GIF"
+    IDS_JPEG                           "Jpeg (pravdØpodobnØ nebude fungovat)"
+    IDS_DIB                            "DIB (Device Independent Bitmap)"
+
+    IDS_SNAPLABEL                      "Sejmout!"
+    IDS_GENERALHELP                    "N ~povØda pro Gotcha!..."
+}
